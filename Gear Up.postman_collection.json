@@ -1,0 +1,794 @@
+{
+  "info": {
+    "_postman_id": "aa69d3af-6b91-4bac-ba57-e033d83bb4a4",
+    "name": "Gear Up",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54745625",
+    "_collection_link": "https://go.postman.co/collection/54745625-aa69d3af-6b91-4bac-ba57-e033d83bb4a4?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\" : \"provider5@gmail.com\",\r\n    \"password\" : \"123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "gear-up-assignment4.vercel.app/api/auth/login",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Current user",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://gear-up-assignment4.vercel.app/api/auth/me",
+              "protocol": "https",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "me"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\" : \"demo customer\",\r\n    \"email\" : \"customer5@gmail.com\",\r\n    \"password\" : \"123\",\r\n    \"role\" : \"CUSTOMER\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://gear-up-assignment4.vercel.app/api/auth/register",
+              "protocol": "https",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ],
+              "query": [
+                {
+                  "key": "title",
+                  "value": "Christiano Ronaldo",
+                  "disabled": true
+                },
+                {
+                  "key": "content",
+                  "value": "Ronaldo",
+                  "disabled": true
+                },
+                {
+                  "key": "searchTerm",
+                  "value": "Ron",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "1",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "3",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "asc",
+                  "description": "asc / desc",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "tags",
+                  "value": "[\"typescript\"]",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Provider",
+      "item": [
+        {
+          "name": "Create Gear",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"bike5\",\r\n  \"description\": \"This is a by-cycle\",\r\n  \"brand\": \"Duronto\",\r\n  \"pricePerDay\": 20,\r\n  \"categoryId\": \"adb96f13-b68b-4c39-816e-38d8ff7adf88\",\r\n  \"image\": \"https://example.com/camera.jpg\",\r\n  \"quantity\": 5\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://gear-up-assignment4.vercel.app/api/provider/gear",
+              "protocol": "https",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "provider",
+                "gear"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Bike\",\r\n  \"description\": \"This is yamaha brand\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://gear-up-assignment4.vercel.app/api/categories",
+              "protocol": "https",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "categories"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Order Status",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"orderId\": \"94363522-5319-4dc4-bd39-5f3d642b58d2\",\r\n    \"providerId\": \"59303ecb-238a-482a-aeef-5bb36f1a9c72\",\r\n    \"status\": \"RETURNED\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://gear-up-assignment4.vercel.app/api/provider/orders/94363522-5319-4dc4-bd39-5f3d642b58d2",
+              "protocol": "https",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "provider",
+                "orders",
+                "94363522-5319-4dc4-bd39-5f3d642b58d2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Provider's Orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://gear-up-assignment4.vercel.app/api/provider/orders",
+              "protocol": "https",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "provider",
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Gear",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "Update Gear",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Updated Tent Name\",\r\n  \"description\": \"Updated description\",\r\n  \"brand\": \"Updated Brand\",\r\n  \"pricePerDay\": 25.99,\r\n  \"quantity\": 10\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://gear-up-assignment4.vercel.app/api/provider/gear/:id",
+              "protocol": "https",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "provider",
+                "gear",
+                ":id"
+              ],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Customer",
+      "item": [
+        {
+          "name": "Create Rent",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"gearItemId\": \"e0acecd1-400f-4b7b-bf87-32d4b06ff33c\",\r\n  \"quantity\": 1,\r\n  \"startDate\": \"2026-07-10\",\r\n  \"endDate\": \"2026-07-11\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://gear-up-assignment4.vercel.app/api/rentals",
+              "protocol": "https",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "rentals"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User's Order",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://gear-up-assignment4.vercel.app/api/rentals",
+              "protocol": "https",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "rentals"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User's Order Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://gear-up-assignment4.vercel.app/api/rentals/94363522-5319-4dc4-bd39-5f3d642b58d2",
+              "protocol": "https",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "rentals",
+                "94363522-5319-4dc4-bd39-5f3d642b58d2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Payment",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"rentalOrderId\": \"94363522-5319-4dc4-bd39-5f3d642b58d2\",\r\n  \"method\": \"STRIPE\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://gear-up-assignment4.vercel.app/api/payments/create",
+              "protocol": "https",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Confirm Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{stripe_secret_key_06av}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "payment_method",
+                  "type": "text",
+                  "uuid": "5a8fe4e5-0869-46a2-b10f-c0b4dcb19c6c",
+                  "value": "pm_card_visa"
+                },
+                {
+                  "key": "return_url",
+                  "type": "text",
+                  "uuid": "1c0ba054-23e8-419f-bd9f-341636c76e8d",
+                  "value": "https://testing-backend-server-in-vercel-fs-sable.vercel.app"
+                }
+              ]
+            },
+            "url": {
+              "raw": "https://api.stripe.com/v1/payment_intents/pi_3Ts4K2KlWZ74rdHs1TrgCvHy/confirm",
+              "protocol": "https",
+              "host": [
+                "api",
+                "stripe",
+                "com"
+              ],
+              "path": [
+                "v1",
+                "payment_intents",
+                "pi_3Ts4K2KlWZ74rdHs1TrgCvHy",
+                "confirm"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Review",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"gearItemId\": \"e0acecd1-400f-4b7b-bf87-32d4b06ff33c\",\r\n  \"rating\": 5,\r\n  \"comment\": \"good\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://gear-up-assignment4.vercel.app/api/reviews",
+              "protocol": "https",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "reviews"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User's Payment History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://gear-up-assignment4.vercel.app/api/payments",
+              "protocol": "https",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "payments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Payment Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://gear-up-assignment4.vercel.app/api/payments/898a2b09-8ac4-4897-a929-98ae31c2f78b",
+              "protocol": "https",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "payments",
+                "898a2b09-8ac4-4897-a929-98ae31c2f78b"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Gear",
+      "item": [
+        {
+          "name": "Get All Gear",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://gear-up-assignment4.vercel.app/api/gear",
+              "protocol": "https",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "gear"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Categories",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "gear-up-assignment4.vercel.app/api/categories",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "categories"
+              ],
+              "query": [
+                {
+                  "key": "title",
+                  "value": "Christiano Ronaldo",
+                  "disabled": true
+                },
+                {
+                  "key": "content",
+                  "value": "Ronaldo",
+                  "disabled": true
+                },
+                {
+                  "key": "searchTerm",
+                  "value": "Ron",
+                  "disabled": true
+                },
+                {
+                  "key": "limit",
+                  "value": "1",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "3",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "createdAt",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "sortOrder",
+                  "value": "asc",
+                  "description": "asc / desc",
+                  "type": "text",
+                  "disabled": true
+                },
+                {
+                  "key": "tags",
+                  "value": "[\"typescript\"]",
+                  "disabled": true
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Gear Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "gear-up-assignment4.vercel.app/api/gear/d01b67f9-fe7b-41f3-b09d-ad040c0a2e0b",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "gear",
+                "d01b67f9-fe7b-41f3-b09d-ad040c0a2e0b"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Get All Users",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\" : \"abc6@gmail.com\",\r\n    \"password\": \"123456\"\r\n}"
+            },
+            "url": {
+              "raw": "gear-up-assignment4.vercel.app/api/admin/users",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User Status",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"BLOCKED\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "gear-up-assignment4.vercel.app/api/admin/users/59303ecb-238a-482a-aeef-5bb36f1a9c72",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "users",
+                "59303ecb-238a-482a-aeef-5bb36f1a9c72"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Gear",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "gear-up-assignment4.vercel.app/api/admin/gear",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "gear"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Orders",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "gear-up-assignment4.vercel.app/api/admin/rentals",
+              "host": [
+                "gear-up-assignment4",
+                "vercel",
+                "app"
+              ],
+              "path": [
+                "api",
+                "admin",
+                "rentals"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "stripe_secret_key_06av",
+      "secret": true
+    },
+    {
+      "key": "bearer_token_04xa",
+      "secret": true
+    }
+  ]
+}
