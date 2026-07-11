@@ -67,7 +67,49 @@ const createPaymentIntent = async (userId: string, payload: ICreatePaymentPayloa
     };
 }
 
+const confirmPayment = async (payload: { paymentIntentId: string; rentalOrderId: string }) => {
+
+    // for confirm payment: stripe payment_intents confirm "clientSecret" --payment-method=pm_card_visa --return-url=http://localhost:5000
+
+    const { paymentIntentId, rentalOrderId } = payload;
+
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+    if (paymentIntent.status !== "succeeded") {
+        throw new Error("Payment has not been completed");
+    }
+
+    const rentalOrder = await prisma.rentalOrder.findUniqueOrThrow({
+        where: { id: rentalOrderId },
+        select: { gearItemId: true, quantity: true }
+    });
+
+    await prisma.$transaction(async (tx) => {
+        await tx.payment.update({
+            where: { rentalOrderId },
+            data: {
+                status: "COMPLETED",
+                transactionId: paymentIntentId,
+                paidAt: new Date()
+            }
+        });
+
+        await tx.rentalOrder.update({
+            where: { id: rentalOrderId },
+            data: { status: "PAID" }
+        });
+
+        await tx.gearItem.update({
+            where: { id: rentalOrder.gearItemId },
+            data: { quantity: { decrement: rentalOrder.quantity } }
+        });
+    });
+
+    return { success: true };
+}
+
 
 export const paymentService = {
-    createPaymentIntent
+    createPaymentIntent,
+    confirmPayment
 }

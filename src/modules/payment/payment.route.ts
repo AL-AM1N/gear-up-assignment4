@@ -9,6 +9,7 @@ const router = Router();
 
 router.post("/create", auth(Role.CUSTOMER), paymentController.createPaymentIntent);
 
+router.post("/confirm", auth(Role.CUSTOMER), paymentController.confirmPayment);
 
 
 export const paymentRoutes = router;
