@@ -143,10 +143,122 @@ const getPaymentById = async (paymentId: string, userId: string) => {
     return payment;
 }
 
+const handleWebhook = async (payload: Buffer, signature: string) => {
+    const endpointSecret = config.stripe_webhook_secret;
+
+    if (!endpointSecret) {
+        throw new Error("Stripe webhook secret is not configured");
+    }
+
+    const event = stripe.webhooks.constructEvent(
+        payload,
+        signature,
+        endpointSecret
+    );
+
+    switch (event.type) {
+        case 'checkout.session.completed': {
+            const session = event.data.object as any;
+            const rentalOrderId = session.metadata?.rentalOrderId;
+            const userId = session.metadata?.userId;
+
+            if (!rentalOrderId || !userId) {
+                console.log("Webhook: Missing metadata in checkout.session.completed");
+                return;
+            }
+
+            const rentalOrder = await prisma.rentalOrder.findUniqueOrThrow({
+                where: { id: rentalOrderId },
+                select: { gearItemId: true, quantity: true }
+            });
+
+            await prisma.$transaction(async (tx) => {
+                await tx.payment.update({
+                    where: { rentalOrderId },
+                    data: {
+                        status: "COMPLETED",
+                        transactionId: session.id,
+                        paidAt: new Date()
+                    }
+                });
+
+                await tx.rentalOrder.update({
+                    where: { id: rentalOrderId },
+                    data: { status: "PAID" }
+                });
+
+                await tx.gearItem.update({
+                    where: { id: rentalOrder.gearItemId },
+                    data: { quantity: { decrement: rentalOrder.quantity } }
+                });
+            });
+
+            break;
+        }
+
+        case 'payment_intent.succeeded': {
+            const paymentIntent = event.data.object as any;
+            const rentalOrderId = paymentIntent.metadata?.rentalOrderId;
+            const userId = paymentIntent.metadata?.userId;
+
+            if (!rentalOrderId || !userId) {
+                console.log("Webhook: Missing metadata in payment_intent.succeeded");
+                return;
+            }
+
+            const payment = await prisma.payment.findUnique({
+                where: { rentalOrderId }
+            });
+
+            if (!payment) {
+                console.log("Webhook: No payment record found for rental order");
+                return;
+            }
+
+            if (payment.status === "COMPLETED") {
+                console.log("Webhook: Payment already completed");
+                return;
+            }
+
+            const rentalOrder = await prisma.rentalOrder.findUniqueOrThrow({
+                where: { id: rentalOrderId },
+                select: { gearItemId: true, quantity: true }
+            });
+
+            await prisma.$transaction(async (tx) => {
+                await tx.payment.update({
+                    where: { rentalOrderId },
+                    data: {
+                        status: "COMPLETED",
+                        transactionId: paymentIntent.id,
+                        paidAt: new Date()
+                    }
+                });
+
+                await tx.rentalOrder.update({
+                    where: { id: rentalOrderId },
+                    data: { status: "PAID" }
+                });
+
+                await tx.gearItem.update({
+                    where: { id: rentalOrder.gearItemId },
+                    data: { quantity: { decrement: rentalOrder.quantity } }
+                });
+            });
+
+            break;
+        }
+
+        default:
+            console.log(`Webhook: Unhandled event type ${event.type}`);
+            break;
+    }
+}
 
 export const paymentService = {
     createPaymentIntent,
     confirmPayment,
+    handleWebhook,
     getMyPayments,
     getPaymentById
 }

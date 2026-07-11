@@ -5,7 +5,7 @@ import { paymentController } from "./payment.controller";
 
 const router = Router();
 
-
+router.post("/webhook", paymentController.handleWebhook);
 
 router.post("/create", auth(Role.CUSTOMER), paymentController.createPaymentIntent);
 
