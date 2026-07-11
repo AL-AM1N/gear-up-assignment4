@@ -15,6 +15,39 @@ const addGearItem = async (providerId: string, payload: ICreateGearPayload) => {
     return gearItem;
 }
 
+const updateGearItem = async (gearId: string, providerId: string, payload: IUpdateGearPayload) => {
+    const gearItem = await prisma.gearItem.findUniqueOrThrow({
+        where: { id: gearId }
+    });
+
+    if (gearItem.providerId !== providerId) {
+        throw new Error("You can only update your own gear items");
+    }
+
+    const updated = await prisma.gearItem.update({
+        where: { id: gearId },
+        data: payload,
+        include: {
+            category: true
+        }
+    });
+
+    return updated;
+}
+
+const deleteGearItem = async (gearId: string, providerId: string) => {
+    const gearItem = await prisma.gearItem.findUniqueOrThrow({
+        where: { id: gearId }
+    });
+
+    if (gearItem.providerId !== providerId) {
+        throw new Error("You can only delete your own gear items");
+    }
+
+    await prisma.gearItem.delete({
+        where: { id: gearId }
+    });
+}
 
 const getMyGearItems = async (providerId: string) => {
     const gearItems = await prisma.gearItem.findMany({
@@ -37,5 +70,7 @@ const getMyGearItems = async (providerId: string) => {
 
 export const providerService = {
     addGearItem,
+    updateGearItem,
+    deleteGearItem,
     getMyGearItems
 }

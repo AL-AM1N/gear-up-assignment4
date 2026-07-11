@@ -16,6 +16,31 @@ const addGearItem = catchAsync(async (req: Request, res: Response, next: NextFun
     });
 });
 
+const updateGearItem = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const providerId = req.user?.id as string;
+    const id = req.params.id as string;
+    const result = await providerService.updateGearItem(id, providerId, req.body);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Gear item updated successfully",
+        data: result
+    });
+});
+
+const deleteGearItem = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const providerId = req.user?.id as string;
+    const id = req.params.id as string;
+    await providerService.deleteGearItem(id, providerId);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Gear item deleted successfully",
+        data: null
+    });
+});
 
 const getMyGearItems = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     const providerId = req.user?.id as string;
@@ -32,6 +57,7 @@ const getMyGearItems = catchAsync(async (req: Request, res: Response, next: Next
 
 export const providerController = {
     addGearItem,
+    updateGearItem,
+    deleteGearItem,
     getMyGearItems,
-
 }

@@ -9,6 +9,9 @@ router.post("/gear", auth(Role.PROVIDER), providerController.addGearItem);
 
 router.get("/gear", auth(Role.PROVIDER), providerController.getMyGearItems);
 
+router.put("/gear/:id", auth(Role.PROVIDER), providerController.updateGearItem);
+
+router.delete("/gear/:id", auth(Role.PROVIDER), providerController.deleteGearItem);
 
 
 export const providerRoutes = router;
