@@ -27,9 +27,35 @@ const confirmPayment = catchAsync(async (req: Request, res: Response, next: Next
     });
 });
 
+const getMyPayments = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id as string;
+    const result = await paymentService.getMyPayments(userId);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Payment history retrieved successfully",
+        data: result
+    });
+});
+
+const getPaymentById = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.id as string;
+    const id = req.params.id as string;
+    const result = await paymentService.getPaymentById(id, userId);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Payment details retrieved successfully",
+        data: result
+    });
+});
 
 
 export const paymentController = {
     createPaymentIntent,
-    confirmPayment
+    confirmPayment,
+    getMyPayments,
+    getPaymentById
 }

@@ -108,8 +108,45 @@ const confirmPayment = async (payload: { paymentIntentId: string; rentalOrderId:
     return { success: true };
 }
 
+const getMyPayments = async (userId: string) => {
+    const payments = await prisma.payment.findMany({
+        where: { userId },
+        orderBy: { createdAt: "desc" },
+        include: {
+            rentalOrder: {
+                include: {
+                    gearItem: true
+                }
+            }
+        }
+    });
+
+    return payments;
+}
+
+const getPaymentById = async (paymentId: string, userId: string) => {
+    const payment = await prisma.payment.findUniqueOrThrow({
+        where: { id: paymentId, userId },
+        include: {
+            rentalOrder: {
+                include: {
+                    gearItem: {
+                        include: {
+                            category: true
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    return payment;
+}
+
 
 export const paymentService = {
     createPaymentIntent,
-    confirmPayment
+    confirmPayment,
+    getMyPayments,
+    getPaymentById
 }
