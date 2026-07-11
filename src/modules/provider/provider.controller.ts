@@ -54,10 +54,37 @@ const getMyGearItems = catchAsync(async (req: Request, res: Response, next: Next
     });
 });
 
+const getIncomingOrders = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const providerId = req.user?.id as string;
+    const result = await providerService.getIncomingOrders(providerId);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Incoming orders retrieved successfully",
+        data: result
+    });
+});
+
+const updateOrderStatus = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    const providerId = req.user?.id as string;
+    const id = req.params.id as string;
+    const { status } = req.body;
+    const result = await providerService.updateOrderStatus(id, providerId, status);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: "Order status updated successfully",
+        data: result
+    });
+});
 
 export const providerController = {
     addGearItem,
     updateGearItem,
     deleteGearItem,
     getMyGearItems,
+    getIncomingOrders,
+    updateOrderStatus
 }

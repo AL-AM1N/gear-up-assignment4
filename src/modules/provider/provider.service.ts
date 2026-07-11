@@ -67,10 +67,78 @@ const getMyGearItems = async (providerId: string) => {
     return gearItems;
 }
 
+const getIncomingOrders = async (providerId: string) => {
+    const orders = await prisma.rentalOrder.findMany({
+        where: {
+            gearItem: {
+                providerId
+            }
+        },
+        orderBy: { createdAt: "desc" },
+        include: {
+            gearItem: true,
+            customer: {
+                omit: { password: true }
+            },
+            payment: true
+        }
+    });
+
+    return orders;
+}
+
+const updateOrderStatus = async (orderId: string, providerId: string, status: string) => {
+    const order = await prisma.rentalOrder.findUniqueOrThrow({
+        where: { id: orderId },
+        include: {
+            gearItem: true
+        }
+    });
+
+    if (order.gearItem.providerId !== providerId) {
+        throw new Error("You can only update orders for your own gear items");
+    }
+
+    const validTransitions: Record<string, string[]> = {
+        "PLACED": ["CONFIRMED", "CANCELLED"],
+        "CONFIRMED": ["PAID", "CANCELLED"],
+        "PAID": ["PICKED_UP", "CANCELLED"],
+        "PICKED_UP": ["RETURNED", "CANCELLED"],
+    };
+
+    const allowed = validTransitions[order.status];
+    if (!allowed || !allowed.includes(status)) {
+        throw new Error(`Cannot transition from ${order.status} to ${status}`);
+    }
+
+    if (status === "RETURNED" || status === "CANCELLED") {
+        if (order.status === "PAID" || order.status === "PICKED_UP") {
+            await prisma.gearItem.update({
+                where: { id: order.gearItemId },
+                data: { quantity: { increment: order.quantity } }
+            });
+        }
+    }
+
+    const updated = await prisma.rentalOrder.update({
+        where: { id: orderId },
+        data: { status: status as any },
+        include: {
+            gearItem: true,
+            customer: {
+                omit: { password: true }
+            }
+        }
+    });
+
+    return updated;
+}
 
 export const providerService = {
     addGearItem,
     updateGearItem,
     deleteGearItem,
-    getMyGearItems
+    getMyGearItems,
+    getIncomingOrders,
+    updateOrderStatus
 }
