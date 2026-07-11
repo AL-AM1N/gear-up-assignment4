@@ -10,3 +10,7 @@ export interface IRegisterUser {
     address?: string;
 }
 
+export interface ILoginUser {
+    email: string;
+    password: string;
+}
