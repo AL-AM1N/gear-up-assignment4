@@ -47,7 +47,44 @@ const createRental = async (customerId: string, payload: ICreateRentalPayload) =
     return rentalOrder;
 }
 
+const getMyRentals = async (customerId: string) => {
+    const rentals = await prisma.rentalOrder.findMany({
+        where: { customerId },
+        orderBy: { createdAt: "desc" },
+        include: {
+            gearItem: {
+                include: {
+                    category: true
+                }
+            },
+            payment: true
+        }
+    });
+
+    return rentals;
+}
+
+const getRentalById = async (rentalId: string, customerId: string) => {
+    const rental = await prisma.rentalOrder.findUniqueOrThrow({
+        where: { id: rentalId, customerId },
+        include: {
+            gearItem: {
+                include: {
+                    category: true,
+                    provider: {
+                        omit: { password: true }
+                    }
+                }
+            },
+            payment: true
+        }
+    });
+
+    return rental;
+}
 
 export const rentalService = {
-    createRental
+    createRental,
+    getMyRentals,
+    getRentalById
 }
