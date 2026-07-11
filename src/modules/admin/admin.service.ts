@@ -35,9 +35,48 @@ const updateUserStatus = async (userId: string, status: "ACTIVE" | "BLOCKED") =>
     return updated;
 }
 
+const getAllGear = async () => {
+    const gearItems = await prisma.gearItem.findMany({
+        orderBy: { createdAt: "desc" },
+        include: {
+            category: true,
+            provider: {
+                omit: { password: true }
+            },
+            _count: {
+                select: {
+                    rentalOrders: true,
+                    reviews: true
+                }
+            }
+        }
+    });
 
+    return gearItems;
+}
+
+const getAllRentals = async () => {
+    const rentals = await prisma.rentalOrder.findMany({
+        orderBy: { createdAt: "desc" },
+        include: {
+            gearItem: {
+                include: {
+                    category: true
+                }
+            },
+            customer: {
+                omit: { password: true }
+            },
+            payment: true
+        }
+    });
+
+    return rentals;
+}
 
 export const adminService = {
     getAllUsers,
-    updateUserStatus
+    updateUserStatus,
+    getAllGear,
+    getAllRentals
 }
