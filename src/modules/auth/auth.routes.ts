@@ -9,4 +9,5 @@ router.post("/register", authController.registerUser)
 
 router.post("/login", authController.loginUser)
 
+router.get("/me", auth(Role.CUSTOMER, Role.PROVIDER, Role.ADMIN), authController.getMe)
 export const authRoutes = router;
